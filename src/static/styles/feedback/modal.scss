@@ -65,17 +65,17 @@
   content: '\e900';
 }
 .eins-modal-dark > .eins-modal-content {
-  color: #fff;
-  border-color: #000;
-  background: #262626;
+  color: $eins_color;
+  border-color: $eins_border_color;
+  background: $eins_background;
 }
 .eins-modal-dark > .eins-modal-content .eins-modal-close {
-  color: #b5b5b5;
-  border-color: #333;
+  color: $eins_color_close;
+  border-color: $eins_border_color_close;
 }
 .eins-modal-dark > .eins-modal-content .eins-modal-close:hover {
-  color: #f27474;
-  border-color: #404040;
+  color: $eins_color_hover;
+  border-color: $eins_border_color_hover;
 }
 .eins-modal.eins-modal-lg > .eins-modal-content {
   max-width: 97.5rem;

@@ -4,7 +4,7 @@
 .card {
   width: 22rem;
   padding: 2rem;
-  box-shadow: 0 0 0.375rem #00000024;
+  box-shadow: 0 0 0.375rem $overlay-color;
   border-radius: 0.75rem;
 
   & .card__header {
@@ -49,7 +49,7 @@
       color: $text-primary;
       background-color: $bg-color;
       border: none;
-      border-bottom: 0.063rem solid #3369f3;
+      border-bottom: 0.063rem solid $brand-color;
     }
 
     & .card__error {
