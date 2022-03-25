@@ -1,6 +1,10 @@
 <div class='conversation-card {{#if this.currentConversation}}current-conversation{{/if}}'>
-  <div class='conversation-card__photo'>
-    <img src={{photo}} alt='Фото собеседника.' />
+  <div class='conversation-card__photo-wrapper'>
+    <img
+      class='conversation-card__photo'
+      src={{photo}}
+      alt='Фото собеседника.'
+    />
   </div>
   <p class='conversation-card__name'>{{name}}</p>
   <p class='conversation-card__last-messege'>{{message}}</p>

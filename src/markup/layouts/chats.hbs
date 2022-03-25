@@ -9,7 +9,11 @@
       </section>
       <div class='actions'>
         <div class='actions__avatar'>
-          <img src={{actionsAvatar}} alt='Фото собеседника.' />
+          <img
+            class='avatar__image'
+            src={{actionsAvatar}}
+            alt='Фото собеседника.'
+          />
         </div>
         <p class='actions__name'>{{actionsName}}</p>
         <div class='popover__wrapper actions__button'>
@@ -22,20 +26,20 @@
                 src='~/src/static/icons/add.svg'
                 alt='Добавить пользователя.'
               />
-              <p>Добавить пользователя</p>
+              <p class='popover__paragraph'>Добавить пользователя</p>
             </a>
             <a class='popover__item'>
               <img
                 src='~/src/static/icons/delete.svg'
                 alt='Удалить пользователя.'
               />
-              <p>Удалить пользователя</p>
+              <p class='popover__paragraph'>Удалить пользователя</p>
             </a>
           </div>
         </div>
       </div>
       <nav class='settings'>
-        <a href='profile-overview.hbs'>Профиль ></a>
+        <a class='settings__link' href='profile-overview.hbs'>Профиль ></a>
       </nav>
       <aside class='conversation-cards'>
         {{#each chats}}
@@ -56,21 +60,21 @@
                 src='~/src/static/icons/image.svg'
                 alt='Добавить фото или видео.'
               />
-              <p>Фото или Видео</p>
+              <p class='popover__paragraph'>Фото или Видео</p>
             </a>
             <a class='popover__item'>
               <img
                 src='~/src/static/icons/file.svg'
                 alt='Добавить фото или видео.'
               />
-              <p>Файл</p>
+              <p class='popover__paragraph'>Файл</p>
             </a>
             <a class='popover__item'>
               <img
                 src='~/src/static/icons/location.svg'
                 alt='Добавить фото или видео.'
               />
-              <p>Локация</p>
+              <p class='popover__paragraph'>Локация</p>
             </a>
           </div>
         </div>

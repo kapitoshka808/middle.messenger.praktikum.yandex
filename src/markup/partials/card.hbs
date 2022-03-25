@@ -2,8 +2,20 @@
   <h3 class='card__header'>{{header}}</h3>
   {{#each inputs}}
     <div class='card__input-block'>
-      <label for={{this.labelID}}>{{this.label}}</label>
-      <input id={{this.labelID}} type={{this.inputType}} {{#if this.required}}required{{/if}} />
+      <label
+        class='input-block__label'
+        for={{this.labelID}}
+      >
+        {{this.label}}
+      </label>
+      <input
+        class='input-block__input'
+        id={{this.labelID}}
+        type={{this.inputType}}
+        {{#if this.required}}
+          equired
+        {{/if}}
+      />
       <div class='card__error'>{{this.error}}</div>
     </div>
   {{/each}}
