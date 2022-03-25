@@ -10,12 +10,12 @@
   {{#if styles}}
     <link href='{{styles}}' rel='stylesheet' /></script>
   {{/if}}
-</head>
-<body>
-  {{{block 'body'}}}
   {{#if script}}
     <script src='{{script}}' type='module'></script>
   {{/if}}
-  <script src="~/src/static/js/eins-modal.min.js"></script>
+  <script src="~/src/static/js/eins-modal.min.js" defer></script>
+</head>
+<body>
+  {{{block 'body'}}}
 </body>
 </html>
