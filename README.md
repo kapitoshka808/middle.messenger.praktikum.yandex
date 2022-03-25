@@ -2,7 +2,7 @@
 
 Потрясающий мессенджер - убийца телеграма (ну почти🙃)
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/50c3c4ab-b60d-4faa-b124-47f53997af9f/deploy-status)](https://app.netlify.com/sites/messenger-yap/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/bfea2cc6-bcb5-4036-950e-689719201d97/deploy-status)](https://app.netlify.com/sites/messenger-yap/deploys)
 
 ## Что под капотом?
 
