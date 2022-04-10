@@ -1,0 +1,38 @@
+@import '../../../../static/styles/base/colors.scss';
+
+.registration {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 28.75rem;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__buttons-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.25rem;
+  }
+
+  &__login-link {
+    height: 0.688rem;
+    text-align: center;
+    opacity: 0.8;
+    margin-top: 0.875rem;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &__login-link-title {
+    color: $brand-color;
+    font-size: 0.8rem;
+    line-height: 0.8rem;
+  }
+}

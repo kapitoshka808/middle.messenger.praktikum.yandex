@@ -1,0 +1,27 @@
+@import '../../static/styles/base/colors.scss';
+@import '../../static/styles/base/center.scss';
+
+.home-page {
+  @include center;
+  justify-content: center;
+  align-items: center;
+
+  &__container {
+    width: 22rem;
+    min-height: 26rem;
+    background: $bg-color;
+    box-shadow: 0rem 0rem 0.375rem $overlay-color;
+    border-radius: 0.75rem;
+    padding: 1.875rem;
+  }
+
+  &__header {
+    color: $text-primary;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  &__header-title {
+    margin-top: 1rem;
+  }
+}

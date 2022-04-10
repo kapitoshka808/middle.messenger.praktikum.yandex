@@ -1,0 +1,189 @@
+@import '../../static/styles/base/colors.scss';
+@import '../../static/styles/base/center.scss';
+
+.profile-page {
+  @include center;
+
+  &__container {
+    @include center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__image {
+    margin: 0.625rem;
+  }
+
+  &__image__icon {
+    width: 8.125rem;
+    height: 8.125rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__user-name {
+    margin: 0.75rem 0;
+    text-align: center;
+    font-size: 1.6rem;
+    line-height: 1rem;
+    font-weight: 800;
+  }
+}
+
+.return-button {
+  position: fixed;
+  left: 0;
+  border-right: 0.063rem solid $input-color;
+  height: 100%;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    height: 100%;
+  }
+
+  &__image {
+    width: 1.75rem;
+    margin: auto 0;
+  }
+}
+
+.avatar {
+  width: 8rem;
+  height: 8rem;
+  display: block;
+}
+
+.user-name {
+  font-weight: 800;
+  margin-top: 0.625rem;
+}
+
+.profile-actions {
+  margin-top: 5rem;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.table {
+  width: 35%;
+  border-collapse: collapse;
+
+  & tr td {
+    border: 0.063rem solid $input-color;
+    border-left: 0;
+    border-right: 0;
+    padding: 0.625rem;
+  }
+
+  & tr:first-child td {
+    border-top: 0;
+  }
+
+  & tr:last-child td {
+    border-bottom: 0;
+  }
+}
+
+.leftCol {
+  color: $text-primary;
+  font-weight: 800;
+}
+
+.rightCol {
+  color: $text-secondary;
+  text-align: end;
+}
+
+.link {
+  color: $brand-color;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.highlight-link {
+  color: $text-highlight;
+}
+
+.profile-edit-input {
+  border: none;
+  text-align: end;
+  color: $text-secondary;
+  font-size: 1rem;
+  padding: 0 0.625rem;
+  border-radius: 0.312rem;
+}
+
+.return-button {
+  position: fixed;
+  left: 0;
+  border-right: 0.063rem solid $input-color;
+  height: 100%;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    height: 100%;
+  }
+
+  &__image {
+    width: 1.75rem;
+    margin: auto 0;
+  }
+}
+
+.photo-container {
+  position: relative;
+
+  &:hover .photo-overlay {
+    opacity: 1;
+    cursor: pointer;
+  }
+}
+
+.photo-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.5s ease;
+  background-color: $overlay-color;
+  border-radius: 50%;
+}
+
+.overlay-text {
+  color: $text-button;
+  font-size: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}

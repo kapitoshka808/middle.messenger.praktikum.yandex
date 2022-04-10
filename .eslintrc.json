@@ -1,16 +1,35 @@
 {
-  "rules": {},
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  "rules": {
+    "max-len": [
+      "warn",
+      {
+        "code": 80,
+        "ignoreUrls": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": 2
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
   "env": {
     "es6": true,
     "browser": true
   },
   "parserOptions": {
-    "ecmaVersion": 2018,
-    "sourceType": "module"
+    "project": "./tsconfig.json"
   },
-  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".ts"]
+      }
+    }
   }
 }

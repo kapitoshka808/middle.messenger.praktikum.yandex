@@ -1,0 +1,15 @@
+@import '../../../../static/styles/base/colors.scss';
+
+.current-chat-area {
+  &__empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+  }
+
+  &__title {
+    text-align: center;
+    color: $text-secondary;
+  }
+}
