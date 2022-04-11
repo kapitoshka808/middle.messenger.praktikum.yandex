@@ -6,6 +6,8 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/bfea2cc6-bcb5-4036-950e-689719201d97/deploy-status)](https://app.netlify.com/sites/messenger-yap/deploys)
 
+Ссылка на сайт: https://messenger-yap.netlify.app/
+
 ## Что под капотом?
 
 HTML, CSS, JavaScript и не грамма магии✨
