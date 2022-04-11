@@ -1,16 +1,16 @@
-@import '../../../static/styles/base/colors.scss';
+@import '../../../static/styles/base/colors ';
 
 .input-profile {
   &__container {
-    position: relative;
-    display: flex;
-    justify-content: space-around;
     align-items: center;
-    padding: 0;
     border: 0.063rem solid transparent;
     border-bottom-color: $input-color;
+    display: flex;
+    justify-content: space-around;
     min-width: 25rem;
+    padding: 0;
     padding: 0.625rem 0;
+    position: relative;
   }
 
   &__label {
@@ -19,22 +19,22 @@
   }
 
   &__input {
-    font-size: 1rem;
-    width: 100%;
-    outline: transparent;
-    color: $text-secondary;
-    border: none;
-    text-align: right;
     background: transparent;
+    border: 0;
+    color: $text-secondary;
+    font-size: 1rem;
+    outline: transparent;
+    text-align: right;
+    width: 100%;
   }
 
   &__error-message {
-    position: absolute;
-    width: 10rem;
-    left: 26rem;
     color: $text-highlight;
     font-size: 0.6rem;
+    left: 26rem;
     line-height: 0.6rem;
     margin-top: 0.5rem;
+    position: absolute;
+    width: 10rem;
   }
 }

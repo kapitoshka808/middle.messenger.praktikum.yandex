@@ -1,4 +1,4 @@
-@import '../../../../static/styles/base/colors.scss';
+@import '../../../../static/styles/base/colors ';
 
 .registration {
   display: flex;
@@ -12,18 +12,18 @@
   }
 
   &__buttons-panel {
+    align-items: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     margin-top: 1.25rem;
   }
 
   &__login-link {
     height: 0.688rem;
-    text-align: center;
-    opacity: 0.8;
     margin-top: 0.875rem;
+    opacity: 0.8;
+    text-align: center;
 
     &:hover {
       opacity: 1;

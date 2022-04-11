@@ -1,10 +1,10 @@
 @import './reseter';
 @import './fonts';
-@import './_colors';
+@import './colors';
 
 body {
-  color: $text-primary;
   background-color: $bg-color;
+  color: $text-primary;
   max-height: 100vh;
   overflow-y: hidden;
 }
