@@ -1,30 +1,43 @@
 {
   "name": "messenger",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Messenger for practicum",
   "author": "Kosimov Anvar",
   "license": "ISC",
   "browserslist": "> 0.5%, last 2 versions, not dead",
-  "engines": {
-    "node": "14.18.1",
-    "npm": "6.14.15"
-  },
   "scripts": {
     "clean:output": "rimraf dist .parcel-cache",
-    "dev": "npm run clean:output && parcel src/markup/index.hbs --port 3000 --no-cache",
-    "build": "npm run clean:output && parcel build src/markup/index.hbs",
-    "start": "npm run build && node server.js"
+    "build": "npm run clean:output && parcel build src/index.html",
+    "dev": "npm run clean:output && parcel src/index.html --port 3000 --no-cache",
+    "start": "node server.js",
+    "stylelint": "stylelint ./src/**/*.scss",
+    "stylelint:fix": "stylelint ./src/**/*.scss --fix",
+    "eslint": "node_modules/.bin/eslint . --ext js,ts",
+    "eslint:fix": "node_modules/.bin/eslint . --ext js,ts --fix"
   },
   "devDependencies": {
-    "@anikin/parcel-transformer-handlebars": "1.0.9",
-    "@parcel/packager-raw-url": "^2.3.2",
-    "@parcel/transformer-sass": "2.3.2",
-    "@parcel/transformer-webmanifest": "^2.3.2",
-    "eslint": "8.10.0",
+    "@parcel/packager-raw-url": "2.4.1",
+    "@parcel/transformer-sass": "2.4.1",
+    "@parcel/transformer-typescript-tsc": "2.4.1",
+    "@parcel/transformer-webmanifest": "2.4.1",
+    "@types/node": "17.0.23",
+    "@typescript-eslint/eslint-plugin": "5.18.0",
+    "@typescript-eslint/parser": "5.18.0",
+    "console-browserify": "1.2.0",
+    "eslint": "8.12.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-prettier": "4.0.0",
     "express": "4.17.3",
-    "parcel": "2.3.2",
+    "parcel": "2.4.1",
     "prettier": "2.5.1",
     "rimraf": "3.0.2",
-    "sass": "1.49.9"
+    "sass": "1.50.0",
+    "stylelint": "14.6.1",
+    "stylelint-config-sass-guidelines": "9.0.1",
+    "typescript": "4.6.3"
+  },
+  "dependencies": {
+    "handlebars": "4.7.7",
+    "nanoid": "3.3.2"
   }
 }

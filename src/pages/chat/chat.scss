@@ -1,0 +1,113 @@
+@import '../../static/styles/base/colors ';
+@import '../../static/styles/base/center ';
+
+.chat-page {
+  @include center;
+
+  &__container {
+    @include center;
+  }
+}
+
+.chat-list-area {
+  background-color: $bg-color;
+  border-right: 0.063rem solid $input-color;
+  min-height: 18.75rem;
+  width: 19.375rem;
+}
+
+.profile {
+  margin-left: 13rem;
+  margin-top: 1.25rem;
+
+  &__link-title {
+    color: $text-secondary;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.search-input {
+  margin: 1.25rem 0;
+  text-align: center;
+}
+
+.conversation-card {
+  border-top: 0.063rem solid $input-color;
+  display: grid;
+  gap: 0 0.625rem;
+  grid-template-areas:
+    'conversation-card__photo conversation-card__name conversation-card__date'
+    'conversation-card__photo conversation-card__last-messege conversation-card__counter';
+  grid-template-columns: 0.5fr 3fr 0.5fr;
+  grid-template-rows: 0.5fr 1fr;
+  height: 5rem;
+  min-width: 16rem;
+  padding: 0.625rem;
+
+  &__photo-wrapper {
+    grid-area: conversation-card__photo;
+    height: 3rem;
+    margin: auto;
+    position: relative;
+    width: 3rem;
+  }
+
+  &__photo {
+    border-radius: 50%;
+    height: 100%;
+    left: 50%;
+    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+  }
+
+  &__name {
+    color: $text-primary;
+    font-weight: 800;
+    grid-area: conversation-card__name;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__date {
+    color: $text-secondary;
+    font-size: 0.875rem;
+    grid-area: conversation-card__date;
+    margin: 0;
+    text-align: right;
+  }
+
+  &__last-messege {
+    color: $text-secondary;
+    grid-area: conversation-card__last-messege;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__counter {
+    align-self: end;
+    background-color: $brand-color;
+    border-radius: 50%;
+    color: $text-button;
+    font-size: 0.875rem;
+    grid-area: conversation-card__counter;
+    height: 1.4rem;
+    line-height: 1.7;
+    margin: 0 0 0 auto;
+    text-align: center;
+    width: 1.4rem;
+  }
+}
+
+.message-input {
+  flex-grow: 1;
+}
