@@ -4,14 +4,14 @@
 *::before,
 *::after {
   box-sizing: inherit;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 html {
-  line-height: 1.15;
   box-sizing: border-box;
   font-family: sans-serif;
+  line-height: 1.15;
 }
 
 main {
@@ -31,10 +31,12 @@ a {
   background-color: transparent;
 }
 
+/* stylelint-disable */
 abbr[title] {
-  -webkit-text-decoration: underline dotted;
+  text-decoration: underline dotted;
   text-decoration: underline dotted;
 }
+/* stylelint-enable */
 
 code,
 kbd,
@@ -65,8 +67,8 @@ input,
 optgroup,
 select,
 textarea {
-  line-height: inherit;
   border: 0.063rem solid currentColor;
+  line-height: inherit;
 }
 
 button {
@@ -78,7 +80,7 @@ button,
 [type='button'],
 [type='reset'],
 [type='submit'] {
-  -webkit-appearance: button;
+  appearance: button;
   padding: 0.063rem 0.375rem;
 }
 
@@ -118,7 +120,7 @@ textarea {
 }
 
 [type='search'] {
-  -webkit-appearance: textfield;
+  appearance: textfield;
   outline-offset: -0.125rem;
 }
 
@@ -131,14 +133,16 @@ textarea {
   height: auto;
 }
 
-::-webkit-input-placeholder {
+/* stylelint-disable */
+::input-placeholder {
   color: inherit;
   opacity: 0.5;
 }
+/* stylelint-enable */
 
 ::-webkit-search-decoration,
 ::-webkit-file-upload-button {
-  -webkit-appearance: button;
+  appearance: button;
   font: inherit;
 }
 
@@ -156,8 +160,8 @@ textarea {
 
 hr {
   box-sizing: content-box;
-  height: 0;
   color: inherit;
+  height: 0;
   overflow: visible;
 }
 
@@ -203,8 +207,8 @@ svg:not(:root) {
 }
 
 table {
-  text-indent: 0;
   border-color: inherit;
+  text-indent: 0;
 }
 
 details {
