@@ -11,7 +11,7 @@ export type TForm = {
 };
 
 export class Form extends Block {
-  constructor(context: TForm, events = {}) {
+  constructor(context: TForm, events: Object = {}) {
     super('div', {
       context: {
         ...context,

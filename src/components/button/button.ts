@@ -10,7 +10,7 @@ export type TButton = {
 };
 
 export class Button extends Block {
-  constructor(context: TButton, events = {}) {
+  constructor(context: TButton, events: Object = {}) {
     super('div', {
       context: {
         ...context,

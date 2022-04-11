@@ -21,7 +21,7 @@ export type TInput = {
 };
 
 export class Input extends Block {
-  constructor(context: TInput, events = {}) {
+  constructor(context: TInput, events: Object = {}) {
     super('div', {
       context: {
         ...context,
