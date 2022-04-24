@@ -1,14 +1,29 @@
 import * as Handlebars from 'handlebars';
-import viewProfileTemplate from './viewProfile.tmpl';
+import { nanoid } from 'nanoid';
+
+import { Button } from '../../../../components/button';
 import { Input } from '../../../../components/input';
+import { LoginController } from '../../../../controllers';
+import { Block } from '../../../../core';
+import router from '../../../../router';
+
+import viewProfileTemplate from './viewProfile.tmpl';
 import './viewProfile.scss';
 
-export function viewProfile() {
+const controller = new LoginController();
+
+const getTemplate = () => {
   const template = Handlebars.compile(viewProfileTemplate);
+
+  const item = localStorage.getItem('user');
+  let user;
+  if (item) {
+    user = JSON.parse(item);
+  }
 
   const inputs = [
     new Input({
-      value: 'pochta@yandex.ru',
+      value: user?.email || '',
       name: 'email',
       label: 'Почта',
       type: 'text',
@@ -17,7 +32,7 @@ export function viewProfile() {
       isProfileInput: true,
     }),
     new Input({
-      value: 'ivanivanov',
+      value: user?.login || '',
       name: 'login',
       label: 'Логин',
       type: 'text',
@@ -26,8 +41,8 @@ export function viewProfile() {
       isProfileInput: true,
     }),
     new Input({
-      value: 'Иван',
-      name: 'name',
+      value: user?.first_name || '',
+      name: 'first_name',
       label: 'Имя',
       type: 'text',
       required: false,
@@ -35,8 +50,8 @@ export function viewProfile() {
       isProfileInput: true,
     }),
     new Input({
-      value: 'Иванов',
-      name: 'lastName',
+      value: user?.second_name || '',
+      name: 'second_name',
       label: 'Фамилия',
       type: 'text',
       required: false,
@@ -44,15 +59,7 @@ export function viewProfile() {
       isProfileInput: true,
     }),
     new Input({
-      value: 'Иван',
-      name: 'nickname',
-      label: 'Имя в чате',
-      type: 'text',
-      disabled: true,
-      isProfileInput: true,
-    }),
-    new Input({
-      value: '+7(909)9673030',
+      value: user?.phone || '',
       name: 'phone',
       label: 'Телефон',
       type: 'text',
@@ -60,14 +67,78 @@ export function viewProfile() {
       disabled: true,
       isProfileInput: true,
     }),
+    new Input({
+      value: user?.display_name || '',
+      name: 'display_name',
+      label: 'Имя в чате',
+      type: 'text',
+      disabled: true,
+      isProfileInput: true,
+    }),
   ];
+
+  const signOutButton = new Button(
+    {
+      linkText: 'Выйти',
+      isLink: true,
+      buttonType: 'submit',
+      buttonClassName: 'sign-out-button',
+    },
+    {
+      click: async () => {
+        await controller.logOut();
+        router.go('/');
+      },
+    }
+  );
+
+  const changeData = new Button(
+    {
+      buttonType: 'button',
+      isLink: true,
+      buttonClassName: 'profile__change-data-link',
+      linkText: 'Изменить данные',
+    },
+    {
+      click: async () => {
+        router.go('/settings-edit-data');
+      },
+    }
+  );
+
+  const changePassword = new Button(
+    {
+      buttonType: 'button',
+      isLink: true,
+      buttonClassName: 'profile__change-password-link',
+      linkText: 'Изменить пароль',
+    },
+    {
+      click: async () => {
+        router.go('/settings-edit-password');
+      },
+    }
+  );
 
   const context = {
     inputs: inputs.map((input) => input.transformToString()),
-    changeData: 'Изменить данные',
-    changePassword: 'Изменить пароль',
-    back: 'Выйти',
+    signOut: signOutButton.transformToString(),
+    changeData: changeData.transformToString(),
+    changePassword: changePassword.transformToString(),
   };
 
   return template(context);
+};
+
+export class ViewProfilePage extends Block {
+  constructor(context = {}, events = {}) {
+    super('div', {
+      context: {
+        ...context,
+        id: nanoid(6),
+      },
+      template: getTemplate(),
+      events,
+    });
+  }
 }

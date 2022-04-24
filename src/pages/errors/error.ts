@@ -1,4 +1,5 @@
 import * as Handlebars from 'handlebars';
+
 import errorPageTemplate from './error.tmpl';
 import './error.scss';
 

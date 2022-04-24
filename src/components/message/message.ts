@@ -1,5 +1,6 @@
+import { Block } from '../../core';
+
 import messageTemplate from './message.tmpl';
-import { Block } from '../../core/block';
 import './message.scss';
 
 export type TMessage = {

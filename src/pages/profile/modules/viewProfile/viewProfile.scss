@@ -16,6 +16,7 @@
 
 .profile {
   &__buttons-panel {
+    align-items: flex-start;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -25,19 +26,22 @@
   &__change-data-link,
   &__change-password-link,
   &__back-link {
-    font-weight: 800;
+    color: $brand-color;
+    font-weight: 600;
     margin: 0.313rem 0;
+    padding: 0;
   }
 
-  &__change-data-link span {
-    color: $brand-color;
+  &__sign-out-link {
+    margin: 0.313rem 0;
+    text-align: center;
+    width: fit-content;
   }
+}
 
-  &__change-password-link span {
-    color: $brand-color;
-  }
-
-  &__back-link span {
-    color: $text-highlight;
-  }
+.sign-out-button {
+  color: $text-highlight;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0;
 }

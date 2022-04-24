@@ -19,7 +19,7 @@ const showWarningMessage = (input: HTMLInputElement, isError: boolean) => {
 const regexp = {
   checkLogin: /^[a-zA-Z0-9-_]{3,20}$/g,
   checkPassword: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/g,
-  checkPhoneNumber: /^\+\d{1,2}\(\d{3,4}\)\d{7,9}/g,
+  checkPhoneNumber: /^((8|\+7)[-]?)?(\(?\d{3}\)?[-]?)?[\d-]{7,10}$/,
   checkMail: /^([\w.-])+@([\w.-])+\.([A-Za-z]{2,4})$/,
   checkName: /^[А-ЯA-Z][a-zа-я-]{1,20}$/g,
 };
@@ -90,7 +90,7 @@ const checkMessageField = (input: HTMLInputElement): boolean => {
   return isError;
 };
 
-export const validation = (data: {
+export const checkValidation = (data: {
   event?: Event | null;
   input?: HTMLInputElement;
 }): boolean => {
@@ -104,7 +104,6 @@ export const validation = (data: {
       return checkLoginField(input);
     case 'email':
       return checkMailField(input);
-    case 'nickname':
     case 'name':
       return checkNameField(input);
     case 'phone':
@@ -116,11 +115,11 @@ export const validation = (data: {
   }
 };
 
-const getFormModel = (form: HTMLFormElement) => {
+const getFormModel = (form: HTMLFormElement): Dictionary => {
   const inputs = form.querySelectorAll('input');
 
   if (!inputs || inputs?.length === 0) {
-    return;
+    return {};
   }
 
   const data: Dictionary = [...inputs].reduce(
@@ -132,38 +131,27 @@ const getFormModel = (form: HTMLFormElement) => {
     {}
   );
 
-  console.log(data);
+  return data;
 };
 
 const checkAllInputsFields = (form: HTMLFormElement) => {
   const inputs = form.querySelectorAll('input');
   return [...inputs]
-    .map((input) => validation({ input }))
+    .map((input) => checkValidation({ input }))
     .every((isError) => isError === false);
 };
 
-export const checkAndCollectData = (event: Event, nextRoute?: string) => {
+export const checkAndCollectData = async (
+  event: Event,
+  controller?: any,
+  method?: string
+) => {
   const form = event.target as HTMLFormElement;
   if (form && checkAllInputsFields(form)) {
-    getFormModel(form);
-    if (nextRoute) {
-      window.location.href = nextRoute;
+    const data = getFormModel(form);
+    if (method) {
+      const isError = await controller[method](data);
+      return isError;
     }
-  }
-};
-
-const getInputModel = (input: HTMLInputElement) => {
-  if (!input) {
-    return;
-  }
-  const { name, value } = input;
-  const result: Dictionary = { [name]: value };
-  console.log(result);
-};
-
-export const checkAndCollectDataFromInput = (event: Event) => {
-  const input = event.target as HTMLInputElement;
-  if (input && !checkMessageField(input)) {
-    getInputModel(input);
   }
 };

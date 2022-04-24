@@ -1,7 +1,8 @@
 /dist
 /node_modules
-/src/**/*.tmpl.ts
-/src/**/*.min.js
+/src/**/*.tmpl.*
+/src/**/*.min.*
+/src/**/*.spec.*
 /typings
 .parcel-cache
 server.js

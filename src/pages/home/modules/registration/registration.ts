@@ -1,12 +1,21 @@
 import * as Handlebars from 'handlebars';
-import registrationTemplate from './registration.tmpl';
-import { Input } from '../../../../components/input';
+import { nanoid } from 'nanoid';
+
 import { Button } from '../../../../components/button';
 import { Form } from '../../../../components/form';
-import { checkAndCollectData, validation } from '../../../../utils';
+import { Input } from '../../../../components/input';
+import { LoginController, ChatController } from '../../../../controllers';
+import { Block } from '../../../../core';
+import router from '../../../../router';
+import { checkAndCollectData, checkValidation } from '../../../../utils';
+
+import registrationTemplate from './registration.tmpl';
 import './registration.scss';
 
-export function registration() {
+const controller = new LoginController();
+const chatController = new ChatController();
+
+const getTemplate = () => {
   const template = Handlebars.compile(registrationTemplate);
 
   const inputs = [
@@ -21,8 +30,11 @@ export function registration() {
           'Почта должна быть написана на латинице, допускаются цифры и спецсимволы',
       },
       {
+        focus: (event: Event) => {
+          checkValidation({ event });
+        },
         blur: (event: Event) => {
-          validation({ event });
+          checkValidation({ event });
         },
       }
     ),
@@ -37,14 +49,17 @@ export function registration() {
           'Логин должен быть от 3 до 20 символов, написан латиницей, допускаются цифры, дефис и нижнее подчёркивание.',
       },
       {
+        focus: (event: Event) => {
+          checkValidation({ event });
+        },
         blur: (event: Event) => {
-          validation({ event });
+          checkValidation({ event });
         },
       }
     ),
     new Input(
       {
-        name: 'name',
+        name: 'first_name',
         label: 'Имя',
         type: 'text',
         required: false,
@@ -53,14 +68,17 @@ export function registration() {
           'Имя должно быть написано на латинице или кириллице, первая буква заглавная, без цифр и спецсимволов',
       },
       {
+        focus: (event: Event) => {
+          checkValidation({ event });
+        },
         blur: (event: Event) => {
-          validation({ event });
+          checkValidation({ event });
         },
       }
     ),
     new Input(
       {
-        name: 'lastName',
+        name: 'second_name',
         label: 'Фамилия',
         type: 'text',
         required: false,
@@ -69,8 +87,11 @@ export function registration() {
           'Фамилия должна быть написана на латинице или кириллице, первая буква заглавная, без цифр и спецсимволов',
       },
       {
+        focus: (event: Event) => {
+          checkValidation({ event });
+        },
         blur: (event: Event) => {
-          validation({ event });
+          checkValidation({ event });
         },
       }
     ),
@@ -85,8 +106,11 @@ export function registration() {
           'Телефон должен быть от 10 до 15 символов, состоять из цифр, может начинается с плюса.',
       },
       {
+        focus: (event: Event) => {
+          checkValidation({ event });
+        },
         blur: (event: Event) => {
-          validation({ event });
+          checkValidation({ event });
         },
       }
     ),
@@ -101,14 +125,17 @@ export function registration() {
           'Пароль должен быть от 8 до 40 символов, обязательно хотя бы одна заглавная буква и одна цифра',
       },
       {
+        focus: (event: Event) => {
+          checkValidation({ event });
+        },
         blur: (event: Event) => {
-          validation({ event });
+          checkValidation({ event });
         },
       }
     ),
     new Input(
       {
-        name: 'secondPassword',
+        name: 'password',
         label: 'Пароль (ещё раз)',
         type: 'password',
         required: true,
@@ -116,8 +143,11 @@ export function registration() {
         errorMessage: 'Введенные пароли не совпадают',
       },
       {
+        focus: (event: Event) => {
+          checkValidation({ event });
+        },
         blur: (event: Event) => {
-          validation({ event });
+          checkValidation({ event });
         },
       }
     ),
@@ -128,10 +158,24 @@ export function registration() {
     buttonType: 'submit',
   });
 
+  const loginLink = new Button(
+    {
+      buttonType: 'button',
+      isLink: true,
+      buttonClassName: 'registration__login-link',
+      linkText: 'Войти',
+    },
+    {
+      click: async () => {
+        router.go('/');
+      },
+    }
+  );
+
   const context = {
     inputs: inputs.map((input) => input.transformToString()),
     button: button.transformToString(),
-    linkTitle: 'Войти',
+    loginLink: loginLink.transformToString(),
   };
 
   const form = new Form(
@@ -143,11 +187,31 @@ export function registration() {
       content: template(context),
     },
     {
-      submit: (event: Event) => {
-        checkAndCollectData(event, '/notSelectedChat');
+      submit: async (event: CustomEvent) => {
+        const isError = await checkAndCollectData(event, controller, 'signUp');
+        if (!isError) {
+          await chatController.getAllChats();
+          router.go('/messenger');
+        } else {
+          console.warn(isError);
+        }
+        await chatController.getAllChats();
       },
     }
   );
 
   return form.transformToString();
+};
+
+export class RegistrationPage extends Block {
+  constructor(context = {}, events = {}) {
+    super('div', {
+      context: {
+        ...context,
+        id: nanoid(6),
+      },
+      template: getTemplate(),
+      events,
+    });
+  }
 }
