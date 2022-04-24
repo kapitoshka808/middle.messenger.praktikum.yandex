@@ -9,7 +9,7 @@
     "clean:output": "rimraf dist .parcel-cache",
     "build": "npm run clean:output && parcel build src/index.html",
     "dev": "npm run clean:output && parcel src/index.html --port 3000 --no-cache",
-    "start": "node server.js",
+    "start": "npm run build && node server.js",
     "test": "mocha -r ts-node/register -r jsdom-global/register -r ignore-styles src/**/*.spec.ts",
     "stylelint": "stylelint ./src/**/*.scss",
     "stylelint:fix": "npm run stylelint -- --fix",
