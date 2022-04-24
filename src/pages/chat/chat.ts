@@ -1,64 +1,233 @@
 import * as Handlebars from 'handlebars';
-import chatPageTemplate from './chat.tmpl';
-import { notSelectedChat } from './modules/notSelectedChat';
-import { chatSelected } from './modules/chatSelected';
-import { checkAndCollectDataFromInput } from '../../utils';
-import { routes } from '../../utils';
+import { nanoid } from 'nanoid';
+
+import { Button } from '../../components/button';
+import { Form } from '../../components/form';
 import { Input } from '../../components/input';
+import { ChatController, LoginController, IChatData } from '../../controllers';
+import { Block } from '../../core';
+import router from '../../router';
+import { store } from '../../store';
+import { avatarIconBase64 } from '../../utils';
+
+import chatPageTemplate from './chat.tmpl';
+import chatElemTemplate from './chatElem.tmpl';
+import { ChatSelectedPage } from './modules/chatSelected';
+import { NotSelectedChatPage } from './modules/notSelectedChat';
+import newChatTemplate from './newChat.tmpl';
+
 import './chat.scss';
 
-export function chatPage(route: string) {
-  const template = Handlebars.compile(chatPageTemplate);
-  const currentChatArea =
-    route === routes.chatSelected ? chatSelected : notSelectedChat;
+const chatController = new ChatController();
+const loginController = new LoginController();
 
-  const searchInput = new Input(
+export const showModal = async (formId: string) => {
+  const form = document.getElementById(formId);
+  if (form?.classList.contains('hidden')) {
+    form?.classList.remove('hidden');
+  }
+};
+
+export const closeModal = (formId: string, inputClassName: string) => {
+  const input = document.querySelector(inputClassName) as HTMLInputElement;
+  const form = document.getElementById(formId);
+  if (input) {
+    input.value = '';
+  }
+  form?.classList.add('hidden');
+};
+
+const createNewChat = async () => {
+  const input = document.querySelector('.new-chat-input') as HTMLInputElement;
+  const title = input.value;
+  await chatController.createChat({ title });
+  closeModal('chat-form', '.new-chat-input');
+  router.go('/messenger');
+};
+
+const getTemplate = (isChatSelected?: boolean) => {
+  const template = Handlebars.compile(chatPageTemplate);
+  const chatTemplate = Handlebars.compile(newChatTemplate);
+  const elemTemplate = Handlebars.compile(chatElemTemplate);
+
+  const currentChatArea = isChatSelected
+    ? new ChatSelectedPage().transformToString()
+    : new NotSelectedChatPage().transformToString();
+
+  const searchInput = new Input({
+    label: '🔎︎ Поиск',
+    inputClassName: 'input__search',
+    name: 'search',
+    type: 'text',
+    inputContainerClassName: 'input__container-gray',
+  });
+
+  const chatTitleInput = new Input({
+    name: 'title',
+    label: 'Название нового чата',
+    type: 'text',
+    required: true,
+    dataType: 'text',
+    inputClassName: 'new-chat-input',
+    inputContainerClassName: 'input__container-gray',
+  });
+
+  const profileLink = new Button(
     {
-      label: '&#x1F50E;&#xFE0E; Поиск',
-      inputClassName: 'input__search',
-      name: 'search',
-      type: 'text',
-      inputContainerClassName: 'input__container-gray',
+      buttonType: 'button',
+      isLink: true,
+      buttonClassName: 'profile__link-title',
+      linkText: 'Профиль >',
     },
     {
-      blur: (event: Event) => {
-        checkAndCollectDataFromInput(event);
+      click: async () => {
+        router.go('/settings');
       },
     }
   );
 
+  const createChat = new Button({
+    buttonType: 'submit',
+    buttonText: 'Создать чат',
+    buttonClassName: 'create-chat-button',
+  });
+
+  const backButton = new Button(
+    {
+      buttonType: 'button',
+      linkText: 'Отмена',
+      isLink: true,
+      buttonClassName: 'back-chat-button',
+    },
+    {
+      click: () => {
+        closeModal('chat-form', '.new-chat-input');
+      },
+    }
+  );
+
+  const newChatContext = {
+    input: chatTitleInput.transformToString(),
+    createChat: createChat.transformToString(),
+    backButton: backButton.transformToString(),
+  };
+
+  const chatForm = new Form(
+    {
+      children: {
+        inputs: [chatTitleInput],
+        button: createChat,
+      },
+      content: chatTemplate(newChatContext),
+    },
+    {
+      submit: async () => {
+        await createNewChat();
+      },
+    }
+  );
+
+  const newChat = new Button(
+    {
+      buttonType: 'button',
+      buttonText: 'Новый чат',
+      buttonClassName: 'new-chat-button',
+    },
+    {
+      click: async () => {
+        await showModal('chat-form');
+      },
+    }
+  );
+
+  const item = localStorage.getItem('chats');
+  let chatsData;
+  if (item) {
+    chatsData = JSON.parse(item);
+    chatsData = chatsData.map((el: IChatData) => {
+      const { unread_count } = el || {};
+      const { content } = el.last_message || {};
+      let { time } = el.last_message || {};
+      if (time) {
+        const dateObject = new Date(time);
+        time = dateObject.getHours() + ':' + dateObject.getMinutes();
+      }
+      const elemContext = {
+        ...el,
+        //todo create base url
+        avatar: el.avatar
+          ? `https://ya-praktikum.tech/api/v2/resources/${el.avatar}`
+          : avatarIconBase64,
+        last_message: content,
+        unread_count,
+        time,
+      };
+
+      const openSelectedChat = async () => {
+        const { id } = elemContext;
+        store.setStateAndPersist({ currentChat: id });
+
+        const userData = localStorage.getItem('user');
+        let user;
+        if (userData) {
+          user = JSON.parse(userData);
+        }
+
+        if (user) {
+          await chatController.connectToChat(user.id, id);
+        }
+        router.go('/messenger-active');
+      };
+
+      const elem = new Button(
+        {
+          buttonType: 'button',
+          isLink: true,
+          buttonClassName: 'new-chat-link',
+          linkText: elemTemplate(elemContext),
+        },
+        {
+          click: async () => {
+            await openSelectedChat();
+          },
+        }
+      );
+
+      return elem.transformToString();
+    });
+  }
+
   const context = {
     currentChatArea,
-    profileTitle: 'Профиль >',
-    emptyChatTitle: 'Выберите чат, чтобы отправить сообщение',
+    profileLink: profileLink.transformToString(),
     searchInput: searchInput.transformToString(),
-    contacts: [
-      {
-        name: 'Петя работа',
-        message:
-          'Вы: Не то слово! Стихотворение «Весенняя гроза» — восторженный монолог лирического героя.',
-        id: '1952',
-        time: '05:45',
-        avatarIcon: 'https://picsum.photos/id/237/200',
-      },
-      {
-        name: 'Алекс доставка',
-        message: 'Я возле подъезда',
-        id: '1953',
-        time: '03:45',
-        counter: 12,
-        avatarIcon: 'https://picsum.photos/id/125/200',
-      },
-      {
-        name: 'Кирилл повар',
-        message: 'Что будет на ужин?',
-        id: '1954',
-        time: '01:44',
-        counter: 6,
-        avatarIcon: 'https://picsum.photos/id/212/200',
-      },
-    ],
+    createChat: newChat.transformToString(),
+    chatForm: chatForm.transformToString(),
+    newChatTitle: 'Создание нового чата',
+    contacts: chatsData || [],
   };
 
   return template(context);
+};
+
+export type TChatPage = {
+  isChatSelected?: boolean;
+  content?: string;
+};
+
+export class ChatPage extends Block {
+  constructor(context: TChatPage, events = {}) {
+    super('div', {
+      context: {
+        ...context,
+        id: nanoid(6),
+      },
+      template: getTemplate(context.isChatSelected),
+      events,
+    });
+  }
+
+  componentDidMount() {
+    loginController.getUser();
+  }
 }

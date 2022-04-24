@@ -1,18 +1,31 @@
-import * as Handlebars from 'handlebars';
+import { nanoid } from 'nanoid';
+
+import { Block } from '../../core';
+
 import homePageTemplate from './home.tmpl';
-import { login } from './modules/login';
-import { registration } from './modules/registration';
-import { routes } from '../../utils';
+import { LoginPage } from './modules/login';
+import { RegistrationPage } from './modules/registration';
+
 import './home.scss';
 
-export function homePage(route: string) {
-  const template = Handlebars.compile(homePageTemplate);
-  const isLogin = route === routes.login;
+export type THomePage = {
+  isLogin?: boolean;
+  content?: string;
+};
 
-  const context = {
-    header: isLogin ? 'Вход' : 'Регистрация',
-    content: isLogin ? login : registration,
-  };
-
-  return template(context);
+export class HomePage extends Block {
+  constructor(context: THomePage, events = {}) {
+    super('div', {
+      context: {
+        ...context,
+        header: context.isLogin ? 'Вход' : 'Регистрация',
+        content: context.isLogin
+          ? new LoginPage().transformToString()
+          : new RegistrationPage().transformToString(),
+        id: nanoid(6),
+      },
+      template: homePageTemplate,
+      events,
+    });
+  }
 }

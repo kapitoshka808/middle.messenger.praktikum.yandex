@@ -1,2 +1,2 @@
-export { Block } from './block';
+export { Block, Dictionary } from './block';
 export { EventBus } from './eventBus';

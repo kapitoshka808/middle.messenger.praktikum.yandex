@@ -1,6 +1,8 @@
-import formTemplate from './form.tmpl';
-import { Block, Dictionary } from '../../core/block';
 import { nanoid } from 'nanoid';
+
+import { Block, Dictionary } from '../../core';
+
+import formTemplate from './form.tmpl';
 
 export type TForm = {
   children?: {

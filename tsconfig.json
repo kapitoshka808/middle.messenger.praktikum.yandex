@@ -19,6 +19,15 @@
     "forceConsistentCasingInFileNames": true,
     "typeRoots": ["node_modules/@types"]
   },
-  "include": ["src"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs",
+      "typeRoots": ["node_modules/@types"]
+    },
+    "include": ["src", "typings/svg.d.ts"],
+    "transpileOnly": true,
+    "files": true
+  },
+  "include": ["src", "typings/svg.d.ts"],
   "files": ["typings/svg.d.ts"]
 }
