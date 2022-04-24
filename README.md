@@ -1,4 +1,4 @@
-## Ссылка на PR: https://github.com/kapitoshka808/middle.messenger.praktikum.yandex/pull/3
+## Ссылка на PR: https://github.com/kapitoshka808/middle.messenger.praktikum.yandex/pull/5
 
 # Учебный проект - мессенджер
 
