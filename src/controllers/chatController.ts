@@ -70,16 +70,17 @@ export class ChatController {
 
   public async removeUser(data: IChatUser) {
     try {
+      //todo fix removeUser(data)
       await chatAPIInstance.removeUser(data);
       const chatId = data.chatId;
       const users = store.getState().usersInChats;
       const storeItem = users.filter(
         (el: IUsers) => el.id === chatId.toString()
       );
-      const usersInChats = storeItem[0].users.filter(
-        (id: string) => id != data.users[0]
-      );
-      storeItem[0].users = usersInChats;
+      let chatUsers = storeItem[0];
+      const userId = data.users[0];
+      const usersInChats = chatUsers.users.filter((id: string) => id != userId);
+      chatUsers.users = usersInChats;
       store.setStateAndPersist({ usersInChats: users });
     } catch (e) {
       redirect(e.reason);
@@ -88,17 +89,14 @@ export class ChatController {
   }
 
   public async getChatToken(id?: number) {
-    let res;
     try {
-      res = await chatAPIInstance.getChatUsers(id);
+      const res = await chatAPIInstance.getChatUsers(id);
+      store.setStateAndPersist({ savedToken: res });
+      return res;
     } catch (e) {
       redirect(e.reason);
-      res = e.reason;
+      return e.reason;
     }
-    if (res !== 'Not found') {
-      store.setStateAndPersist({ savedToken: res });
-    }
-    return res;
   }
 
   public async getChatUsers(id: number) {
