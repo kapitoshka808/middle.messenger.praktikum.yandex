@@ -11,6 +11,16 @@ export default
     <div class='current-chat-name'>
       {{chatTitle}}
     </div>
+    <div class='users-list'>
+      <span>
+       Пользователи в чате:
+      </span>
+      {{#each users}}
+        <span class='user-item'>
+          {{{this}}},
+        </span>
+      {{/each}}
+    </div>
     <div class='popover__wrapper actions__button'>
       <div class='chat-settings'>
         <img
@@ -26,16 +36,6 @@ export default
     </div>
   </div>
   <div class='current-chat__main'>
-    <div class='users-list'>
-      <span>
-       Пользователи в чате:
-      </span>
-      {{#each users}}
-        <span class='user-item'>
-          {{{this}}},
-        </span>
-      {{/each}}
-    </div>
     <div class='messages__container'></div>
     <div class='user-form hidden' id='add-user-form'>
       <div class='user-form-title'>
