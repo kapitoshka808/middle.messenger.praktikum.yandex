@@ -220,17 +220,10 @@ const getTemplate = (profileType: string) => {
     ],
   };
 
-  const save = new Button(
-    {
-      buttonText: 'Сохранить',
-      buttonType: 'submit',
-    },
-    {
-      click: async () => {
-        router.go('/settings');
-      },
-    }
-  );
+  const save = new Button({
+    buttonText: 'Сохранить',
+    buttonType: 'submit',
+  });
 
   const inputs = profileInputs[profileType];
 
