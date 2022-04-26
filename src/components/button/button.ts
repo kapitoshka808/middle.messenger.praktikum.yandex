@@ -17,7 +17,7 @@ export type TButton = {
   buttonType: string;
 };
 
-const getClassName = (context: TButton) => {
+const getClassName = (context: TButton): string => {
   const className = context.isLink ? 'button-link' : 'button';
   return `${className} ${isClassDefined(context.buttonClassName)}`;
 };

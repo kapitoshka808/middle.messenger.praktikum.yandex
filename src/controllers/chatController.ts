@@ -34,7 +34,9 @@ export class ChatController {
     try {
       const chatData = await chatAPIInstance.createChat(data);
       if (chatData) {
-        store.setStateAndPersist({ currentChat: (chatData as IChatData).id });
+        store.setStateAndPersist({
+          currentChat: (chatData as unknown as IChatData).id,
+        });
       }
       await this.getAllChats();
     } catch (e) {
