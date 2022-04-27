@@ -148,11 +148,11 @@ const getTemplate = (isChatSelected?: boolean) => {
     chatsData = JSON.parse(item);
     chatsData = chatsData.map((el: IChatData) => {
       const { unread_count } = el || {};
-      const { content } = el.last_message || {};
-      let { time } = el.last_message || {};
+      const { content, time } = el.last_message || {};
+      let messageTime = null;
       if (time) {
         const dateObject = new Date(time);
-        time = dateObject.getHours() + ':' + dateObject.getMinutes();
+        messageTime = dateObject.getHours() + ':' + dateObject.getMinutes();
       }
       const elemContext = {
         ...el,
@@ -161,8 +161,8 @@ const getTemplate = (isChatSelected?: boolean) => {
           ? `https://ya-praktikum.tech/api/v2/resources/${el.avatar}`
           : avatarIconBase64,
         last_message: content,
+        time: messageTime,
         unread_count,
-        time,
       };
 
       const openSelectedChat = async () => {
@@ -170,13 +170,8 @@ const getTemplate = (isChatSelected?: boolean) => {
         store.setStateAndPersist({ currentChat: id });
 
         const userData = localStorage.getItem('user');
-        let user;
         if (userData) {
-          user = JSON.parse(userData);
-        }
-
-        if (user) {
-          await chatController.connectToChat(user.id, id);
+          await chatController.connectToChat(JSON.parse(userData).id, id);
         }
         router.go('/messenger-active');
       };
