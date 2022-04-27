@@ -1,7 +1,5 @@
 import { Dictionary } from '../core';
 
-const isEqual = (lhs: string, rhs: string) => lhs === rhs;
-
 const render = (block: any) => {
   const app: HTMLElement | null = document.getElementById('app');
   if (app) app.innerHTML = block.transformToString();
@@ -44,7 +42,7 @@ export class Route {
   }
 
   match(pathname: string) {
-    return isEqual(pathname, this._pathname);
+    return pathname === this._pathname;
   }
 
   render() {
