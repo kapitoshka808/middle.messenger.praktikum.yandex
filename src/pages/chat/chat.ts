@@ -1,5 +1,4 @@
 import * as Handlebars from 'handlebars';
-import { nanoid } from 'nanoid';
 
 import { Button } from '../../components/button';
 import { Form } from '../../components/form';
@@ -217,7 +216,6 @@ export class ChatPage extends Block {
     super('div', {
       context: {
         ...context,
-        id: nanoid(6),
       },
       template: getTemplate(context.isChatSelected),
       events,

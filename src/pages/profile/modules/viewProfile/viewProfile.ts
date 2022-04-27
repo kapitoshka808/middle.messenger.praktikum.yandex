@@ -1,5 +1,4 @@
 import * as Handlebars from 'handlebars';
-import { nanoid } from 'nanoid';
 
 import { Button } from '../../../../components/button';
 import { Input } from '../../../../components/input';
@@ -135,7 +134,6 @@ export class ViewProfilePage extends Block {
     super('div', {
       context: {
         ...context,
-        id: nanoid(6),
       },
       template: getTemplate(),
       events,

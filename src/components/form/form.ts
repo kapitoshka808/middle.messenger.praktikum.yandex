@@ -1,5 +1,3 @@
-import { nanoid } from 'nanoid';
-
 import { Block, Dictionary } from '../../core';
 
 import formTemplate from './form.tmpl';
@@ -17,7 +15,6 @@ export class Form extends Block {
     super('div', {
       context: {
         ...context,
-        id: nanoid(6),
       },
       template: formTemplate,
       events,

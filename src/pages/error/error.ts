@@ -1,5 +1,4 @@
 import * as Handlebars from 'handlebars';
-import { nanoid } from 'nanoid';
 
 import { Button } from '../../components/button';
 import { Block } from '../../core';
@@ -49,7 +48,6 @@ export class ErrorPage extends Block {
     super('div', {
       context: {
         ...context,
-        id: nanoid(6),
       },
       template: getTemplate(context.scheme),
       events,

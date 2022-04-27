@@ -1,5 +1,3 @@
-import { nanoid } from 'nanoid';
-
 import { Block } from '../../core/block';
 import { isClassDefined } from '../../utils';
 
@@ -28,7 +26,6 @@ export class Button extends Block {
       context: {
         ...context,
         buttonClassName: getClassName(context),
-        id: nanoid(6),
       },
       template: context.isLink ? linkTemplate : buttonTemplate,
       events,

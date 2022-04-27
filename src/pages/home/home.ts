@@ -1,5 +1,3 @@
-import { nanoid } from 'nanoid';
-
 import { Block } from '../../core';
 
 import homePageTemplate from './home.tmpl';
@@ -22,7 +20,6 @@ export class HomePage extends Block {
         content: context.isLogin
           ? new LoginPage().transformToString()
           : new RegistrationPage().transformToString(),
-        id: nanoid(6),
       },
       template: homePageTemplate,
       events,

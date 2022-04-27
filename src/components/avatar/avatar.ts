@@ -1,5 +1,3 @@
-import { nanoid } from 'nanoid';
-
 import { Block } from '../../core';
 import { isClassDefined } from '../../utils';
 
@@ -17,7 +15,6 @@ export class Avatar extends Block {
       context: {
         ...context,
         className: `${isClassDefined(context.className)}`,
-        id: nanoid(6),
       },
       template: avatarTemplate,
       events,

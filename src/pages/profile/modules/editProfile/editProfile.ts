@@ -1,5 +1,4 @@
 import * as Handlebars from 'handlebars';
-import { nanoid } from 'nanoid';
 
 import { Button } from '../../../../components/button';
 import { Form } from '../../../../components/form';
@@ -268,7 +267,6 @@ export class EditProfilePage extends Block {
     super('div', {
       context: {
         ...context,
-        id: nanoid(6),
       },
       template: getTemplate(context.profileType),
       events,

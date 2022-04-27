@@ -1,5 +1,4 @@
 import * as Handlebars from 'handlebars';
-import { nanoid } from 'nanoid';
 
 import { Avatar } from '../../components/avatar';
 import { Button } from '../../components/button';
@@ -81,7 +80,7 @@ const getTemplate = (profileType?: string, isViewProfile?: boolean) => {
 
   const context = {
     avatar: avatar.transformToString(),
-    id: nanoid(6),
+
     header: getName(),
     isViewMode: isViewProfile,
     returnButton: returnButton.transformToString(),
@@ -96,7 +95,6 @@ export class ProfilePage extends Block {
     super('div', {
       context: {
         ...context,
-        id: nanoid(6),
       },
       template: getTemplate(context.profileType, context.isViewProfile),
       events,

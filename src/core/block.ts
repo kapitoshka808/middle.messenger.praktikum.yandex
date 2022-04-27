@@ -1,4 +1,5 @@
 import * as Handlebars from 'handlebars';
+import { nanoid } from 'nanoid';
 
 import { EventBus } from './eventBus';
 
@@ -102,6 +103,7 @@ export class Block {
 
   private _render() {
     const { context } = this.props;
+    context.id = nanoid(6);
     this._elementId = context && context.id;
     const block = this.render();
     if (block) {

@@ -1,5 +1,4 @@
 import * as Handlebars from 'handlebars';
-import { nanoid } from 'nanoid';
 
 import { Button } from '../../../../components/button';
 import { Form } from '../../../../components/form';
@@ -354,7 +353,6 @@ export class ChatSelectedPage extends Block {
       {
         context: {
           ...context,
-          id: nanoid(6),
         },
         template: getTemplate(),
         events,
