@@ -20,19 +20,11 @@
   }
 
   &__login-link {
-    height: 0.688rem;
-    margin-top: 0.875rem;
-    opacity: 0.8;
-    text-align: center;
-
-    &:hover {
-      opacity: 1;
-    }
-  }
-
-  &__login-link-title {
     color: $brand-color;
-    font-size: 0.8rem;
-    line-height: 0.8rem;
+    font-size: 0.75rem;
+    height: 0.688rem;
+    line-height: 0.75rem;
+    margin-top: 0.875rem;
+    text-align: center;
   }
 }

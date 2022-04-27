@@ -1,12 +1,20 @@
 import * as Handlebars from 'handlebars';
-import loginTemplate from './login.tmpl';
-import { Input } from '../../../../components/input';
+
 import { Button } from '../../../../components/button';
 import { Form } from '../../../../components/form';
-import { validation, checkAndCollectData } from '../../../../utils';
+import { Input } from '../../../../components/input';
+import { LoginController, ChatController } from '../../../../controllers';
+import { Block } from '../../../../core';
+import router from '../../../../router';
+import { checkValidation, checkAndCollectData } from '../../../../utils';
+
+import loginTemplate from './login.tmpl';
 import './login.scss';
 
-export function login() {
+const controller = new LoginController();
+const chatController = new ChatController();
+
+const getTemplate = () => {
   const template = Handlebars.compile(loginTemplate);
 
   const loginInput = new Input(
@@ -19,8 +27,11 @@ export function login() {
       errorMessage: 'Неверный логин',
     },
     {
+      focus: (event: Event) => {
+        checkValidation({ event });
+      },
       blur: (event: Event) => {
-        validation({ event });
+        checkValidation({ event });
       },
     }
   );
@@ -35,8 +46,11 @@ export function login() {
       errorMessage: 'Неверный пароль',
     },
     {
+      focus: (event: Event) => {
+        checkValidation({ event });
+      },
       blur: (event: Event) => {
-        validation({ event });
+        checkValidation({ event });
       },
     }
   );
@@ -46,10 +60,24 @@ export function login() {
     buttonType: 'submit',
   });
 
+  const registrationLink = new Button(
+    {
+      buttonType: 'button',
+      isLink: true,
+      buttonClassName: 'login__registration-link',
+      linkText: 'Нет аккаунта?',
+    },
+    {
+      click: async () => {
+        router.go('/sign-up');
+      },
+    }
+  );
+
   const context = {
     inputs: [loginInput.transformToString(), passwordInput.transformToString()],
     button: button.transformToString(),
-    linkTitle: 'Нет аккаунта?',
+    registrationLink: registrationLink.transformToString(),
   };
 
   const form = new Form(
@@ -61,11 +89,29 @@ export function login() {
       content: template(context),
     },
     {
-      submit: (event: Event) => {
-        checkAndCollectData(event, '/notSelectedChat');
+      submit: async (event: CustomEvent) => {
+        const isError = await checkAndCollectData(event, controller, 'login');
+        if (!isError) {
+          await chatController.getAllChats();
+          router.go('/messenger');
+        } else {
+          console.warn(isError);
+        }
       },
     }
   );
 
   return form.transformToString();
+};
+
+export class LoginPage extends Block {
+  constructor(context = {}, events = {}) {
+    super('div', {
+      context: {
+        ...context,
+      },
+      template: getTemplate(),
+      events,
+    });
+  }
 }

@@ -1,6 +1,6 @@
+import { Block, Dictionary } from '../../core';
+
 import formTemplate from './form.tmpl';
-import { Block, Dictionary } from '../../core/block';
-import { nanoid } from 'nanoid';
 
 export type TForm = {
   children?: {
@@ -15,7 +15,6 @@ export class Form extends Block {
     super('div', {
       context: {
         ...context,
-        id: nanoid(6),
       },
       template: formTemplate,
       events,

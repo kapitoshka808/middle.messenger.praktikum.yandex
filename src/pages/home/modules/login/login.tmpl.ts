@@ -9,10 +9,6 @@ export default
   </div>
   <div class='login__buttons-panel'>
     {{{button}}}
-    <a class='login__registration-link' href='/registration'>
-      <span class='login__registration-link-title'>
-        {{linkTitle}}
-      </span>
-    </a>
+    {{{registrationLink}}}
   </div>
 </div>`;

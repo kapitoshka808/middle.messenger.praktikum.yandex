@@ -11,6 +11,16 @@ export default
     <div class='current-chat-name'>
       {{chatTitle}}
     </div>
+    <div class='users-list'>
+      <span>
+       Пользователи в чате:
+      </span>
+      {{#each users}}
+        <span class='user-item'>
+          {{{this}}},
+        </span>
+      {{/each}}
+    </div>
     <div class='popover__wrapper actions__button'>
       <div class='chat-settings'>
         <img
@@ -20,35 +30,26 @@ export default
         >
       </div>
       <div class='popover__content popover__content--bottom-left'>
-        <a class='popover__item'>
-          <img
-            src='{{addIcon}}'
-            alt='Добавить пользователя.'
-          />
-          <p class='popover__paragraph'>Добавить пользователя</p>
-        </a>
-        <a class='popover__item'>
-          <img
-            src='{{deleteIcon}}'
-            alt='Удалить пользователя.'
-          />
-          <p class='popover__paragraph'>Удалить пользователя</p>
-        </a>
+        {{{addUser}}}
+        {{{removeUser}}}
       </div>
     </div>
   </div>
   <div class='current-chat__main'>
-    <section class='messages'>
-      <date class='messages__date'>
-        {{chatDate}}
-      </date>
-      {{#each messages}}
-        <div data-component='messages' data-key='{{@index}}'>
-          {{{this}}}
-        </div>
-      {{/each}}
-      </section>
+    <div class='messages__container'></div>
+    <div class='user-form hidden' id='add-user-form'>
+      <div class='user-form-title'>
+        {{newUserTitle}}
+      </div>
+      {{{addUserForm}}}
     </div>
+    <div class='user-form hidden' id='remove-user-form'>
+      <div class='user-form-title'>
+        {{removeUserTitle}}
+      </div>
+      {{{removeUserForm}}}
+    </div>
+  </div>
   <footer class='current-chat__footer'>
     <div class='popover__wrapper'>
           <button class='add-file-button' type='button'>
@@ -81,16 +82,11 @@ export default
             </a>
           </div>
         </div>
-
     <div class='message-input'>
       {{{message}}}
     </div>
     <div class='send-button'>
-      <img
-        src='{{sendIcon}}'
-        class='send-button__icon'
-        alt='Отправить сообщение.'
-      >
+      {{{sendButton}}}
     </div>
   </footer>
 </div>`;

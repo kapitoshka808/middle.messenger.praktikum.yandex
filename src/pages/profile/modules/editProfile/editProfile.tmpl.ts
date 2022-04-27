@@ -6,10 +6,8 @@ export default
     {{/each}}
   </div>
   <div class='edit-profile__buttons-panel'>
-    <a href='/viewProfile'>
-      <div class='edit-profile__save-link'>
-        {{{save}}}
-      </div>
-    </a>
+    <div class='edit-profile__save-link'>
+      {{{save}}}
+    </div>
   </div>
 </div>`;

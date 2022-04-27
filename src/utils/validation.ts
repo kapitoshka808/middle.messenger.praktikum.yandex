@@ -16,10 +16,10 @@ const showWarningMessage = (input: HTMLInputElement, isError: boolean) => {
   }
 };
 
-const regexp = {
+const REGEXP = {
   checkLogin: /^[a-zA-Z0-9-_]{3,20}$/g,
   checkPassword: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/g,
-  checkPhoneNumber: /^\+\d{1,2}\(\d{3,4}\)\d{7,9}/g,
+  checkPhoneNumber: /^((8|\+7)[-]?)?(\(?\d{3}\)?[-]?)?[\d-]{7,10}$/,
   checkMail: /^([\w.-])+@([\w.-])+\.([A-Za-z]{2,4})$/,
   checkName: /^[А-ЯA-Z][a-zа-я-]{1,20}$/g,
 };
@@ -27,7 +27,7 @@ const regexp = {
 const checkLoginField = (input: HTMLInputElement): boolean => {
   let isError = false;
   if (input) {
-    const { checkLogin } = regexp;
+    const { checkLogin } = REGEXP;
     const { value } = input;
     isError = !value.match(checkLogin) || value.length < 3 || value.length > 20;
     showWarningMessage(input, isError);
@@ -38,7 +38,7 @@ const checkLoginField = (input: HTMLInputElement): boolean => {
 const checkPasswordField = (input: HTMLInputElement): boolean => {
   let isError = false;
   if (input) {
-    const { checkPassword } = regexp;
+    const { checkPassword } = REGEXP;
     const { value } = input;
     isError =
       !value.match(checkPassword) || value.length < 8 || value.length > 40;
@@ -50,7 +50,7 @@ const checkPasswordField = (input: HTMLInputElement): boolean => {
 const checkPhoneNumberField = (input: HTMLInputElement): boolean => {
   let isError = false;
   if (input) {
-    const { checkPhoneNumber } = regexp;
+    const { checkPhoneNumber } = REGEXP;
     const { value } = input;
     isError =
       !value.match(checkPhoneNumber) || value.length < 10 || value.length > 15;
@@ -62,7 +62,7 @@ const checkPhoneNumberField = (input: HTMLInputElement): boolean => {
 const checkMailField = (input: HTMLInputElement): boolean => {
   let isError = false;
   if (input) {
-    const { checkMail } = regexp;
+    const { checkMail } = REGEXP;
     const { value } = input;
     isError = !value.match(checkMail);
     showWarningMessage(input, isError);
@@ -73,7 +73,7 @@ const checkMailField = (input: HTMLInputElement): boolean => {
 const checkNameField = (input: HTMLInputElement): boolean => {
   let isError = false;
   if (input) {
-    const { checkName } = regexp;
+    const { checkName } = REGEXP;
     const { value } = input;
     isError = !value.match(checkName);
     showWarningMessage(input, isError);
@@ -90,7 +90,7 @@ const checkMessageField = (input: HTMLInputElement): boolean => {
   return isError;
 };
 
-export const validation = (data: {
+export const checkValidation = (data: {
   event?: Event | null;
   input?: HTMLInputElement;
 }): boolean => {
@@ -104,7 +104,6 @@ export const validation = (data: {
       return checkLoginField(input);
     case 'email':
       return checkMailField(input);
-    case 'nickname':
     case 'name':
       return checkNameField(input);
     case 'phone':
@@ -116,11 +115,11 @@ export const validation = (data: {
   }
 };
 
-const getFormModel = (form: HTMLFormElement) => {
+const getFormModel = (form: HTMLFormElement): Dictionary => {
   const inputs = form.querySelectorAll('input');
 
   if (!inputs || inputs?.length === 0) {
-    return;
+    return {};
   }
 
   const data: Dictionary = [...inputs].reduce(
@@ -132,38 +131,29 @@ const getFormModel = (form: HTMLFormElement) => {
     {}
   );
 
-  console.log(data);
+  return data;
 };
 
 const checkAllInputsFields = (form: HTMLFormElement) => {
   const inputs = form.querySelectorAll('input');
-  return [...inputs]
-    .map((input) => validation({ input }))
-    .every((isError) => isError === false);
+  if (inputs) {
+    return [...inputs]
+      .map((input) => checkValidation({ input }))
+      .every((isError) => isError === false);
+  }
 };
 
-export const checkAndCollectData = (event: Event, nextRoute?: string) => {
+export const checkAndCollectData = async (
+  event: Event,
+  controller?: any,
+  method?: string
+) => {
   const form = event.target as HTMLFormElement;
   if (form && checkAllInputsFields(form)) {
-    getFormModel(form);
-    if (nextRoute) {
-      window.location.href = nextRoute;
+    const data = getFormModel(form);
+    if (method) {
+      const isError = await controller[method](data);
+      return isError;
     }
-  }
-};
-
-const getInputModel = (input: HTMLInputElement) => {
-  if (!input) {
-    return;
-  }
-  const { name, value } = input;
-  const result: Dictionary = { [name]: value };
-  console.log(result);
-};
-
-export const checkAndCollectDataFromInput = (event: Event) => {
-  const input = event.target as HTMLInputElement;
-  if (input && !checkMessageField(input)) {
-    getInputModel(input);
   }
 };

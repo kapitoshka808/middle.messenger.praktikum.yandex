@@ -1,20 +1,32 @@
 import * as Handlebars from 'handlebars';
-import editProfileTemplate from './editProfile.tmpl';
-import { Input } from '../../../../components/input';
+
 import { Button } from '../../../../components/button';
 import { Form } from '../../../../components/form';
-import { checkAndCollectData, validation } from '../../../../utils';
-import { Dictionary } from '../../../../core/block';
+import { Input } from '../../../../components/input';
+import { UserController } from '../../../../controllers';
+import { Block, Dictionary } from '../../../../core';
+import router from '../../../../router';
+import { checkAndCollectData, checkValidation } from '../../../../utils';
+
+import editProfileTemplate from './editProfile.tmpl';
 import './editProfile.scss';
 
-export function editProfile(profileType: string) {
+const controller = new UserController();
+
+const getTemplate = (profileType: string) => {
   const template = Handlebars.compile(editProfileTemplate);
+
+  const item = localStorage.getItem('user');
+  let user;
+  if (item) {
+    user = JSON.parse(item);
+  }
 
   const profileInputs: Dictionary = {
     passwordInputs: [
       new Input(
         {
-          name: 'password',
+          name: 'oldPassword',
           label: 'Старый пароль',
           type: 'password',
           required: true,
@@ -23,14 +35,17 @@ export function editProfile(profileType: string) {
           isProfileInput: true,
         },
         {
+          focus: (event: Event) => {
+            checkValidation({ event });
+          },
           blur: (event: Event) => {
-            validation({ event });
+            checkValidation({ event });
           },
         }
       ),
       new Input(
         {
-          name: 'secondPassword',
+          name: 'newPassword',
           label: 'Новый пароль',
           type: 'password',
           required: true,
@@ -40,14 +55,17 @@ export function editProfile(profileType: string) {
           isProfileInput: true,
         },
         {
+          focus: (event: Event) => {
+            checkValidation({ event });
+          },
           blur: (event: Event) => {
-            validation({ event });
+            checkValidation({ event });
           },
         }
       ),
       new Input(
         {
-          name: 'secondPassword',
+          name: 'newSecondPassword',
           label: 'Повторите новый пароль',
           type: 'password',
           required: true,
@@ -56,8 +74,11 @@ export function editProfile(profileType: string) {
           isProfileInput: true,
         },
         {
+          focus: (event: Event) => {
+            checkValidation({ event });
+          },
           blur: (event: Event) => {
-            validation({ event });
+            checkValidation({ event });
           },
         }
       ),
@@ -65,7 +86,7 @@ export function editProfile(profileType: string) {
     profileDataInputs: [
       new Input(
         {
-          value: 'pochta@yandex.ru',
+          value: user?.email || '',
           name: 'email',
           label: 'Почта',
           type: 'text',
@@ -77,14 +98,17 @@ export function editProfile(profileType: string) {
           isProfileInput: true,
         },
         {
+          focus: (event: Event) => {
+            checkValidation({ event });
+          },
           blur: (event: Event) => {
-            validation({ event });
+            checkValidation({ event });
           },
         }
       ),
       new Input(
         {
-          value: 'ivanivanov',
+          value: user?.login || '',
           name: 'login',
           label: 'Логин',
           type: 'text',
@@ -96,15 +120,18 @@ export function editProfile(profileType: string) {
           isProfileInput: true,
         },
         {
+          focus: (event: Event) => {
+            checkValidation({ event });
+          },
           blur: (event: Event) => {
-            validation({ event });
+            checkValidation({ event });
           },
         }
       ),
       new Input(
         {
-          value: 'Иван',
-          name: 'name',
+          value: user?.first_name || '',
+          name: 'first_name',
           label: 'Имя',
           type: 'text',
           required: false,
@@ -115,15 +142,18 @@ export function editProfile(profileType: string) {
           isProfileInput: true,
         },
         {
+          focus: (event: Event) => {
+            checkValidation({ event });
+          },
           blur: (event: Event) => {
-            validation({ event });
+            checkValidation({ event });
           },
         }
       ),
       new Input(
         {
-          value: 'Иванов',
-          name: 'lastName',
+          value: user?.second_name || '',
+          name: 'second_name',
           label: 'Фамилия',
           type: 'text',
           required: false,
@@ -134,33 +164,39 @@ export function editProfile(profileType: string) {
           isProfileInput: true,
         },
         {
+          focus: (event: Event) => {
+            checkValidation({ event });
+          },
           blur: (event: Event) => {
-            validation({ event });
+            checkValidation({ event });
           },
         }
       ),
       new Input(
         {
-          value: 'Иван',
-          name: 'nickname',
+          value: user?.display_name || '',
+          name: 'display_name',
           label: 'Имя в чате',
           type: 'text',
-          required: false,
+          required: true,
           disabled: false,
           errorMessage:
-            'Ник должен быть от 3 до 20 символов, написан латиницей, допускаются цифры, дефис и нижнее подчёркивание.',
-          dataType: 'nickname',
+            'Имя должно быть написано на латинице или кириллице, первая буква заглавная, без цифр и спецсимволов',
+          dataType: 'name',
           isProfileInput: true,
         },
         {
+          focus: (event: Event) => {
+            checkValidation({ event });
+          },
           blur: (event: Event) => {
-            validation({ event });
+            checkValidation({ event });
           },
         }
       ),
       new Input(
         {
-          value: '+7(909)9673030',
+          value: user?.phone || '',
           name: 'phone',
           label: 'Телефон',
           type: 'text',
@@ -172,8 +208,11 @@ export function editProfile(profileType: string) {
           isProfileInput: true,
         },
         {
+          focus: (event: Event) => {
+            checkValidation({ event });
+          },
           blur: (event: Event) => {
-            validation({ event });
+            checkValidation({ event });
           },
         }
       ),
@@ -201,11 +240,36 @@ export function editProfile(profileType: string) {
       content: template(context),
     },
     {
-      submit: (event: Event) => {
-        checkAndCollectData(event, '/viewProfile');
+      submit: async (event: Event) => {
+        const action =
+          profileType === 'passwordInputs'
+            ? 'changeUserPassword'
+            : 'changeUserProfile';
+        const isError = await checkAndCollectData(event, controller, action);
+        if (!isError) {
+          router.go('/settings');
+        } else {
+          console.warn(isError);
+        }
       },
     }
   );
 
   return form.transformToString();
+};
+
+export type TEditProfilePage = {
+  profileType: string;
+};
+
+export class EditProfilePage extends Block {
+  constructor(context: TEditProfilePage, events = {}) {
+    super('div', {
+      context: {
+        ...context,
+      },
+      template: getTemplate(context.profileType),
+      events,
+    });
+  }
 }

@@ -16,3 +16,9 @@ a {
 .hidden {
   display: none;
 }
+
+.invisible {
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+}

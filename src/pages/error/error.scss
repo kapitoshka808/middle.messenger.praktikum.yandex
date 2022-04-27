@@ -19,12 +19,9 @@
   }
 
   &__link {
-    font-size: 0.688rem;
-    line-height: 0.688rem;
-    text-align: center;
-  }
-
-  &__link-title {
     color: $brand-color;
+    font-size: 0.75rem;
+    line-height: 0.75rem;
+    text-align: center;
   }
 }
