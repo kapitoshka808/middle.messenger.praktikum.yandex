@@ -16,7 +16,7 @@ const showWarningMessage = (input: HTMLInputElement, isError: boolean) => {
   }
 };
 
-const regexp = {
+const REGEXP = {
   checkLogin: /^[a-zA-Z0-9-_]{3,20}$/g,
   checkPassword: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/g,
   checkPhoneNumber: /^((8|\+7)[-]?)?(\(?\d{3}\)?[-]?)?[\d-]{7,10}$/,
@@ -27,7 +27,7 @@ const regexp = {
 const checkLoginField = (input: HTMLInputElement): boolean => {
   let isError = false;
   if (input) {
-    const { checkLogin } = regexp;
+    const { checkLogin } = REGEXP;
     const { value } = input;
     isError = !value.match(checkLogin) || value.length < 3 || value.length > 20;
     showWarningMessage(input, isError);
@@ -38,7 +38,7 @@ const checkLoginField = (input: HTMLInputElement): boolean => {
 const checkPasswordField = (input: HTMLInputElement): boolean => {
   let isError = false;
   if (input) {
-    const { checkPassword } = regexp;
+    const { checkPassword } = REGEXP;
     const { value } = input;
     isError =
       !value.match(checkPassword) || value.length < 8 || value.length > 40;
@@ -50,7 +50,7 @@ const checkPasswordField = (input: HTMLInputElement): boolean => {
 const checkPhoneNumberField = (input: HTMLInputElement): boolean => {
   let isError = false;
   if (input) {
-    const { checkPhoneNumber } = regexp;
+    const { checkPhoneNumber } = REGEXP;
     const { value } = input;
     isError =
       !value.match(checkPhoneNumber) || value.length < 10 || value.length > 15;
@@ -62,7 +62,7 @@ const checkPhoneNumberField = (input: HTMLInputElement): boolean => {
 const checkMailField = (input: HTMLInputElement): boolean => {
   let isError = false;
   if (input) {
-    const { checkMail } = regexp;
+    const { checkMail } = REGEXP;
     const { value } = input;
     isError = !value.match(checkMail);
     showWarningMessage(input, isError);
@@ -73,7 +73,7 @@ const checkMailField = (input: HTMLInputElement): boolean => {
 const checkNameField = (input: HTMLInputElement): boolean => {
   let isError = false;
   if (input) {
-    const { checkName } = regexp;
+    const { checkName } = REGEXP;
     const { value } = input;
     isError = !value.match(checkName);
     showWarningMessage(input, isError);
