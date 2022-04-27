@@ -34,15 +34,17 @@ export const closeModal = (formId: string, inputClassName: string) => {
   if (input) {
     input.value = '';
   }
-  form?.classList.add('hidden');
+  form.classList?.add('hidden');
 };
 
 const createNewChat = async () => {
   const input = document.querySelector('.new-chat-input') as HTMLInputElement;
-  const title = input.value;
-  await chatController.createChat({ title });
-  closeModal('chat-form', '.new-chat-input');
-  router.go('/messenger');
+  if (input) {
+    const title = input.value;
+    await chatController.createChat({ title });
+    closeModal('chat-form', '.new-chat-input');
+    router.go('/messenger');
+  }
 };
 
 const getTemplate = (isChatSelected?: boolean) => {

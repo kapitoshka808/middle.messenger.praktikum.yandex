@@ -136,9 +136,11 @@ const getFormModel = (form: HTMLFormElement): Dictionary => {
 
 const checkAllInputsFields = (form: HTMLFormElement) => {
   const inputs = form.querySelectorAll('input');
-  return [...inputs]
-    .map((input) => checkValidation({ input }))
-    .every((isError) => isError === false);
+  if (inputs) {
+    return [...inputs]
+      .map((input) => checkValidation({ input }))
+      .every((isError) => isError === false);
+  }
 };
 
 export const checkAndCollectData = async (
