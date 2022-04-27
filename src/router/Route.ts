@@ -1,9 +1,5 @@
 import { Dictionary } from '../core';
-
-const render = (block: any) => {
-  const app: HTMLElement | null = document.getElementById('app');
-  if (app) app.innerHTML = block.transformToString();
-};
+import { render } from '../utils/helpers';
 
 export interface IRoute {
   navigate(pathname: string): void;

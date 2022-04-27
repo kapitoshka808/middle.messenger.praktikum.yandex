@@ -16,3 +16,8 @@ export const redirect = (err: unknown) => {
     router.go('/messenger');
   }
 };
+
+export const render = (block: any) => {
+  const app: HTMLElement | null = document.getElementById('app');
+  if (app) app.innerHTML = block.transformToString();
+};
