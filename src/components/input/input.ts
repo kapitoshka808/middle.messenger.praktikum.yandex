@@ -1,5 +1,3 @@
-import { nanoid } from 'nanoid';
-
 import { Block } from '../../core';
 import { isClassDefined, classIfElse } from '../../utils';
 
@@ -39,7 +37,6 @@ export class Input extends Block {
           'input-profile__input',
           'input'
         )} ${isClassDefined(context.inputClassName)}`,
-        id: nanoid(6),
       },
       template: context.isProfileInput ? inputProfileTemplate : inputTemplate,
       events,

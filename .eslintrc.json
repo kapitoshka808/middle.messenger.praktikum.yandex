@@ -15,6 +15,7 @@
         "ignoreTemplateLiterals": true
       }
     ],
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "@typescript-eslint/no-unused-vars": 2,
     "import/order": [
       "error",

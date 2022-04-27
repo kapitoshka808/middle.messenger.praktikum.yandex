@@ -1,5 +1,4 @@
 import * as Handlebars from 'handlebars';
-import { nanoid } from 'nanoid';
 
 import { Block } from '../../../../core';
 
@@ -23,7 +22,6 @@ export class NotSelectedChatPage extends Block {
       {
         context: {
           ...context,
-          id: nanoid(6),
         },
         template: getTemplate(),
         events,

@@ -1,5 +1,4 @@
 import * as Handlebars from 'handlebars';
-import { nanoid } from 'nanoid';
 
 import { Button } from '../../../../components/button';
 import { Form } from '../../../../components/form';
@@ -59,14 +58,16 @@ const sendMessage = async (socket: WebSocket) => {
   const messageInput = document.querySelector(
     '.input__message'
   ) as HTMLInputElement;
-  const message = {
-    content: messageInput.value,
-    type: 'message',
-  };
-  socket.send(JSON.stringify(message));
-  messageInput.value = '';
-  await chatController.getAllChats();
-  router.go('/messenger-active');
+  if (messageInput) {
+    const message = {
+      content: messageInput.value,
+      type: 'message',
+    };
+    socket.send(JSON.stringify(message));
+    messageInput.value = '';
+    await chatController.getAllChats();
+    router.go('/messenger-active');
+  }
 };
 
 const getOldMessages = (socket: WebSocket) => {
@@ -86,7 +87,7 @@ const handleMessages = (message: Dictionary | Dictionary[]) => {
   const chatContainer = document.querySelector('.current-chat__main');
 
   const addMessage = (elem: Dictionary) => {
-    if (elem.content) {
+    if (messagesContainer && elem.content) {
       const myMessage = elem.user_id == localStorage.getItem('myID');
       const dateObject = new Date(elem.time);
       const options: Intl.DateTimeFormatOptions = {
@@ -117,7 +118,9 @@ const handleMessages = (message: Dictionary | Dictionary[]) => {
   } else {
     addMessage(message);
   }
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+  if (chatContainer) {
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
 };
 
 const getTemplate = () => {
@@ -138,22 +141,26 @@ const getTemplate = () => {
 
   const addUsersToChat = async (chatId: string) => {
     const input = document.querySelector('.new-user-input') as HTMLInputElement;
-    const usersArray = input.value.split(',');
-    const users = usersArray.map((s) => s.trim());
-    await chatController.addUser({ users, chatId: parseInt(chatId, 10) });
-    store.setStateAndPersist({ usersInChats: [{ id: chatId, users }] });
-    closeModal('add-user-form', '.new-user-input');
-    router.go('/messenger-active');
+    if (input) {
+      const usersArray = input.value.split(',');
+      const users = usersArray.map((s) => s.trim());
+      await chatController.addUser({ users, chatId: parseInt(chatId, 10) });
+      store.setStateAndPersist({ usersInChats: [{ id: chatId, users }] });
+      closeModal('add-user-form', '.new-user-input');
+      router.go('/messenger-active');
+    }
   };
 
   const removeUsersFromChat = async (chatId: string) => {
     const input = document.querySelector(
       '.remove-user-input'
     ) as HTMLInputElement;
-    const users = input.value.split(',');
-    await chatController.removeUser({ users, chatId: parseInt(chatId, 10) });
-    closeModal('remove-user-form', '.remove-user-input');
-    router.go('/messenger-active');
+    if (input) {
+      const users = input.value.split(',');
+      await chatController.removeUser({ users, chatId: parseInt(chatId, 10) });
+      closeModal('remove-user-form', '.remove-user-input');
+      router.go('/messenger-active');
+    }
   };
 
   const message = new Input(
@@ -346,7 +353,6 @@ export class ChatSelectedPage extends Block {
       {
         context: {
           ...context,
-          id: nanoid(6),
         },
         template: getTemplate(),
         events,

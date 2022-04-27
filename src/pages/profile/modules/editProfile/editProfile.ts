@@ -1,5 +1,4 @@
 import * as Handlebars from 'handlebars';
-import { nanoid } from 'nanoid';
 
 import { Button } from '../../../../components/button';
 import { Form } from '../../../../components/form';
@@ -220,17 +219,10 @@ const getTemplate = (profileType: string) => {
     ],
   };
 
-  const save = new Button(
-    {
-      buttonText: 'Сохранить',
-      buttonType: 'submit',
-    },
-    {
-      click: async () => {
-        router.go('/settings');
-      },
-    }
-  );
+  const save = new Button({
+    buttonText: 'Сохранить',
+    buttonType: 'submit',
+  });
 
   const inputs = profileInputs[profileType];
 
@@ -275,7 +267,6 @@ export class EditProfilePage extends Block {
     super('div', {
       context: {
         ...context,
-        id: nanoid(6),
       },
       template: getTemplate(context.profileType),
       events,

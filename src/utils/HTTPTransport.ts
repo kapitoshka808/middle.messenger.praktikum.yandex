@@ -1,13 +1,13 @@
-enum METHODS {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  PATCH = 'PATCH',
-  DELETE = 'DELETE',
+enum Methods {
+  Get = 'GET',
+  Post = 'POST',
+  Put = 'PUT',
+  Patch = 'PATCH',
+  Delete = 'DELETE',
 }
 
 type Options = {
-  method?: METHODS;
+  method?: Methods;
   data?: unknown;
   headers?: Record<string, string>;
   contentType?: string;
@@ -28,7 +28,7 @@ export default class HTTPTransport {
     headers?: Record<string, string>
   ): Promise<Response> {
     return this.request<Response>(this.url + path, {
-      method: METHODS.GET,
+      method: Methods.Get,
       data,
       headers,
     });
@@ -40,7 +40,7 @@ export default class HTTPTransport {
     headers?: Record<string, string>
   ): Promise<Response> {
     return this.request<Response>(this.url + path, {
-      method: METHODS.POST,
+      method: Methods.Post,
       data,
       headers,
     });
@@ -53,7 +53,7 @@ export default class HTTPTransport {
     contentType?: string
   ): Promise<Response> {
     return this.request<Response>(this.url + path, {
-      method: METHODS.PUT,
+      method: Methods.Put,
       data,
       headers,
       contentType,
@@ -66,7 +66,7 @@ export default class HTTPTransport {
     headers?: Record<string, string>
   ): Promise<Response> {
     return this.request<Response>(this.url + path, {
-      method: METHODS.PATCH,
+      method: Methods.Patch,
       data,
       headers,
     });
@@ -78,7 +78,7 @@ export default class HTTPTransport {
     headers?: Record<string, string>
   ): Promise<Response> {
     return this.request<Response>(this.url + path, {
-      method: METHODS.DELETE,
+      method: Methods.Delete,
       data,
       headers,
     });
@@ -86,7 +86,7 @@ export default class HTTPTransport {
 
   private request<Response>(
     url: string,
-    options: Options = { method: METHODS.GET }
+    options: Options = { method: Methods.Get }
   ): Promise<Response> {
     const { method, data = {}, headers = {} } = options;
 
@@ -116,7 +116,7 @@ export default class HTTPTransport {
       );
       xhr.setRequestHeader('Accept', 'application/json');
 
-      if (method === METHODS.GET || !data) {
+      if (method === Methods.Get || !data) {
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send();
       } else if (data instanceof FormData) {

@@ -1,5 +1,4 @@
 import * as Handlebars from 'handlebars';
-import { nanoid } from 'nanoid';
 
 import { Button } from '../../components/button';
 import { Form } from '../../components/form';
@@ -34,15 +33,17 @@ export const closeModal = (formId: string, inputClassName: string) => {
   if (input) {
     input.value = '';
   }
-  form?.classList.add('hidden');
+  form.classList?.add('hidden');
 };
 
 const createNewChat = async () => {
   const input = document.querySelector('.new-chat-input') as HTMLInputElement;
-  const title = input.value;
-  await chatController.createChat({ title });
-  closeModal('chat-form', '.new-chat-input');
-  router.go('/messenger');
+  if (input) {
+    const title = input.value;
+    await chatController.createChat({ title });
+    closeModal('chat-form', '.new-chat-input');
+    router.go('/messenger');
+  }
 };
 
 const getTemplate = (isChatSelected?: boolean) => {
@@ -146,11 +147,11 @@ const getTemplate = (isChatSelected?: boolean) => {
     chatsData = JSON.parse(item);
     chatsData = chatsData.map((el: IChatData) => {
       const { unread_count } = el || {};
-      const { content } = el.last_message || {};
-      let { time } = el.last_message || {};
+      const { content, time } = el.last_message || {};
+      let messageTime = null;
       if (time) {
         const dateObject = new Date(time);
-        time = dateObject.getHours() + ':' + dateObject.getMinutes();
+        messageTime = dateObject.getHours() + ':' + dateObject.getMinutes();
       }
       const elemContext = {
         ...el,
@@ -159,8 +160,8 @@ const getTemplate = (isChatSelected?: boolean) => {
           ? `https://ya-praktikum.tech/api/v2/resources/${el.avatar}`
           : avatarIconBase64,
         last_message: content,
+        time: messageTime,
         unread_count,
-        time,
       };
 
       const openSelectedChat = async () => {
@@ -168,13 +169,8 @@ const getTemplate = (isChatSelected?: boolean) => {
         store.setStateAndPersist({ currentChat: id });
 
         const userData = localStorage.getItem('user');
-        let user;
         if (userData) {
-          user = JSON.parse(userData);
-        }
-
-        if (user) {
-          await chatController.connectToChat(user.id, id);
+          await chatController.connectToChat(JSON.parse(userData).id, id);
         }
         router.go('/messenger-active');
       };
@@ -220,7 +216,6 @@ export class ChatPage extends Block {
     super('div', {
       context: {
         ...context,
-        id: nanoid(6),
       },
       template: getTemplate(context.isChatSelected),
       events,

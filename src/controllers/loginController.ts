@@ -28,6 +28,7 @@ export class LoginController {
   public async logOut() {
     try {
       await authInstance.logOut();
+      localStorage.clear();
     } catch (e) {
       redirect(e.reason);
       return e.reason;

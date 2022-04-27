@@ -1,4 +1,5 @@
 import * as Handlebars from 'handlebars';
+import { nanoid } from 'nanoid';
 
 import { EventBus } from './eventBus';
 
@@ -53,14 +54,14 @@ export class Block {
     this.eventBus.emit(Block.EVENTS.INIT);
   }
 
-  _registerEvents(eventBus: EventBus) {
+  private _registerEvents(eventBus: EventBus) {
     eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
-  _createResources() {
+  private _createResources() {
     const { tagName, className } = this._meta;
     this._element = this._createDocumentElement(tagName, className);
   }
@@ -70,13 +71,13 @@ export class Block {
     this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
   }
 
-  _componentDidMount() {
+  private _componentDidMount() {
     this.componentDidMount();
   }
 
   componentDidMount() {}
 
-  _componentDidUpdate(oldProps: Dictionary, newProps: Dictionary) {
+  private _componentDidUpdate(oldProps: Dictionary, newProps: Dictionary) {
     const response = this.componentDidUpdate(oldProps, newProps);
     if (!response) {
       return;
@@ -100,8 +101,9 @@ export class Block {
     return this._element;
   }
 
-  _render() {
+  private _render() {
     const { context } = this.props;
+    context.id = nanoid(6);
     this._elementId = context && context.id;
     const block = this.render();
     if (block) {
@@ -124,7 +126,7 @@ export class Block {
     return container.firstElementChild;
   }
 
-  _makePropsProxy(props: Dictionary) {
+  private _makePropsProxy(props: Dictionary) {
     return new Proxy(props, {
       get: (target, prop: string) => {
         const value = target[prop];
@@ -141,7 +143,7 @@ export class Block {
     });
   }
 
-  _createDocumentElement(tagName: string, className?: string) {
+  private _createDocumentElement(tagName: string, className?: string) {
     const node = document.createElement(tagName);
     if (className) {
       node.classList.add(className);
@@ -149,7 +151,7 @@ export class Block {
     return node;
   }
 
-  _triggerEvent(event: Event, func: Function) {
+  private _triggerEvent(event: Event, func: Function) {
     const target = event.target as HTMLElement;
     const id = target.getAttribute('data-id');
 
@@ -159,7 +161,7 @@ export class Block {
     }
   }
 
-  _addEventListeners() {
+  private _addEventListeners() {
     const { events = {} } = this.props;
     Object.keys(events).forEach((event) => {
       const app = document.querySelector('#app') as HTMLElement;
@@ -173,7 +175,7 @@ export class Block {
     });
   }
 
-  _removeEventListeners() {
+  private _removeEventListeners() {
     const { events = {} } = this.props;
     Object.keys(events).forEach((event) => {
       const app = document.querySelector('#app') as HTMLElement;
@@ -198,6 +200,7 @@ export class Block {
   }
 
   remove() {
+    this._removeEventListeners();
     this._element.remove();
   }
 }

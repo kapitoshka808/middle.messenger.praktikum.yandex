@@ -1,5 +1,4 @@
 import * as Handlebars from 'handlebars';
-import { nanoid } from 'nanoid';
 
 import { Button } from '../../../../components/button';
 import { Input } from '../../../../components/input';
@@ -59,19 +58,19 @@ const getTemplate = () => {
       isProfileInput: true,
     }),
     new Input({
+      value: user?.display_name || '',
+      name: 'display_name',
+      label: 'Имя в чате',
+      type: 'text',
+      disabled: true,
+      isProfileInput: true,
+    }),
+    new Input({
       value: user?.phone || '',
       name: 'phone',
       label: 'Телефон',
       type: 'text',
       required: false,
-      disabled: true,
-      isProfileInput: true,
-    }),
-    new Input({
-      value: user?.display_name || '',
-      name: 'display_name',
-      label: 'Имя в чате',
-      type: 'text',
       disabled: true,
       isProfileInput: true,
     }),
@@ -135,7 +134,6 @@ export class ViewProfilePage extends Block {
     super('div', {
       context: {
         ...context,
-        id: nanoid(6),
       },
       template: getTemplate(),
       events,
