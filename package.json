@@ -11,15 +11,7 @@
     "dev": "webpack serve --mode=development",
     "start": "node server.js",
     "test": "mocha -r ts-node/register -r jsdom-global/register -r ignore-styles src/**/*.spec.ts",
-    "stylelint": "stylelint ./src/**/*.scss",
-    "stylelint:fix": "npm run stylelint -- --fix",
-    "eslint": "node_modules/.bin/eslint . --ext js,ts",
-    "eslint:fix": "npm run eslint -- --fix"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm-run-all eslint:fix stylelint:fix test"
-    }
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@types/chai": "4.3.1",
@@ -49,6 +41,7 @@
     "ignore-styles": "5.0.1",
     "jsdom": "19.0.0",
     "jsdom-global": "3.0.2",
+    "lint-staged": "12.4.1",
     "mini-css-extract-plugin": "2.6.0",
     "mocha": "10.0.0",
     "npm-run-all": "4.1.5",
@@ -70,5 +63,9 @@
   "dependencies": {
     "handlebars": "4.7.7",
     "nanoid": "3.3.3"
+  },
+  "lint-staged": {
+    "*.ts": "eslint --cache --fix",
+    "*.scss": "stylelint --fix"
   }
 }
