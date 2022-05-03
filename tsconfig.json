@@ -29,5 +29,9 @@
     "files": true
   },
   "include": ["src", "typings/svg.d.ts"],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ],
   "files": ["typings/svg.d.ts"]
 }
