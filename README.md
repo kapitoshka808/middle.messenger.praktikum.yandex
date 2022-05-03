@@ -6,7 +6,9 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/bfea2cc6-bcb5-4036-950e-689719201d97/deploy-status)](https://app.netlify.com/sites/messenger-yap/deploys)
 
-Ссылка на сайт: https://messenger-yap.netlify.app/
+Ссылка на Netlify: https://messenger-yap.netlify.app/
+
+Ссылка на Heroku: https://messenger-yap.herokuapp.com/
 
 ## Что под капотом?
 
@@ -49,7 +51,7 @@ npm run build
 Чтобы запустить проект на express сервере:
 
 ```sh
-npm run server
+npm run start
 ```
 
 Чтобы форматировать код:
