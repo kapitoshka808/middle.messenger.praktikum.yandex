@@ -6,7 +6,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 let config = {
   entry: {
@@ -72,9 +71,6 @@ let config = {
       },
     ],
   },
-  performance: {
-    hints: 'warning',
-  },
   optimization: {
     runtimeChunk: 'single',
   },
@@ -98,20 +94,6 @@ let config = {
     }),
     new CaseSensitivePathsPlugin(),
     new MiniCssExtractPlugin({ filename: 'style-[contenthash].css' }),
-    new CompressionPlugin({
-      filename: '[path][base].br',
-      algorithm: 'brotliCompress',
-      test: /\.(js|css|html)$/,
-      compressionOptions: {
-        params: {
-          [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
-        },
-      },
-      threshold: 10240,
-      minRatio: 0.8,
-      deleteOriginalAssets: false,
-    }),
-    new CleanWebpackPlugin(),
   ],
 };
 
@@ -123,5 +105,27 @@ module.exports = (env, argv) => {
       port: 3000,
     };
   }
+
+  if (argv.mode === 'production') {
+    config.performance = {
+      hints: 'warning',
+    };
+    config.plugins.push(
+      new CompressionPlugin({
+        filename: '[path][base].br',
+        algorithm: 'brotliCompress',
+        test: /\.(js|css|html)$/,
+        compressionOptions: {
+          params: {
+            [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
+          },
+        },
+        threshold: 10240,
+        minRatio: 0.8,
+        deleteOriginalAssets: false,
+      })
+    );
+  }
+
   return config;
 };
