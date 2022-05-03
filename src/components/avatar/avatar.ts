@@ -3,6 +3,7 @@ import { isClassDefined } from '../../utils';
 
 import avatarTemplate from './avatar.tmpl';
 import './avatar.scss';
+import '../../static/js/eins-modal.min.js';
 
 export type TAvatar = {
   className: string;
