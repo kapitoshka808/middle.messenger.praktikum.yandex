@@ -6,3 +6,4 @@
 /typings
 .parcel-cache
 server.js
+webpack.config.js
